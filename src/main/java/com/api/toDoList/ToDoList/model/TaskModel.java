@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,7 +19,7 @@ public class TaskModel {
 
     @Id
     @GeneratedValue
-    private long id;
+    private UUID id;
     @Column(nullable = false, length = 50)
     private String name;
     @Column(nullable = false, length = 500)
