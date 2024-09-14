@@ -32,4 +32,12 @@ public class TaskService {
     public Optional<TaskModel> getTaskById(UUID id) {
         return taskRepository.findById(id);
     }
+
+    public List<TaskModel> getCompletedTasks() {
+        return taskRepository.getByCompletedTrue();
+    }
+
+    public List<TaskModel> getNotCompletedTasks() {
+        return taskRepository.getByCompletedFalse();
+    }
 }
