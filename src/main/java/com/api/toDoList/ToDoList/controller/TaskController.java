@@ -30,9 +30,19 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping("/tasks/")
-    public ResponseEntity<List<TaskModel>> getAllTasks() { 
+    public ResponseEntity<List<TaskModel>> getAllTasks() {
         return ResponseEntity.status(HttpStatus.OK).body(taskService.getAllTasks());
     }
+
+    @GetMapping("/tasks/completed/")
+    public ResponseEntity<List<TaskModel>> getCompleted() {
+        return ResponseEntity.status(HttpStatus.OK).body(taskService.getCompletedTasks());
+    }
+
+    @GetMapping("/tasks/not-completed")
+    public ResponseEntity<List<TaskModel>> getNotCompelted() {
+        return ResponseEntity.status(HttpStatus.OK).body(taskService.getNotCompletedTasks());
+    }   
 
     @GetMapping("/task/{id}")
     public ResponseEntity<Optional<TaskModel>> getTaskById(@PathVariable final UUID id) {
@@ -44,6 +54,14 @@ public class TaskController {
 
         var taskModel = new TaskModel();
         BeanUtils.copyProperties(taskDto, taskModel);
+
+        if(taskDto.isCompleted()) {
+            taskModel.setCompleted(true);
+        }
+
+        if(taskDto.getDueDate() != null) {
+            taskModel.setDueDate(taskDto.getDueDate());
+        }
 
         taskModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.save(taskModel));
