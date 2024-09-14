@@ -40,4 +40,10 @@ public class TaskService {
     public List<TaskModel> getNotCompletedTasks() {
         return taskRepository.getByCompletedFalse();
     }
+
+    public boolean delete(UUID id) {
+        
+        taskRepository.deleteById(id);
+        return true;
+    }
 }

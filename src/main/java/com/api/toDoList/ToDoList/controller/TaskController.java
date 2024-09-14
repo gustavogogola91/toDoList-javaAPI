@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -22,7 +24,9 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 
+@CrossOrigin("*")
 @Controller
 public class TaskController {
 
@@ -67,4 +71,22 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.save(taskModel));
     }
 
-}
+    @PutMapping("task/{id}")
+    public ResponseEntity<TaskModel> updateTask(@PathVariable UUID id, @RequestBody TaskDto taskDto) {
+
+        Optional<TaskModel> taskModelList = taskService.getTaskById(id);
+
+        TaskModel taskModel = taskModelList.get();
+
+        taskModel.setName(taskDto.getName());
+        taskModel.setDescription(taskDto.getDescription());
+        taskModel.setDueDate(taskDto.getDueDate());
+        taskModel.setCompleted(taskDto.isCompleted());
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.save(taskModel));
+    }
+
+    @DeleteMapping("/task/{id}")
+    public ResponseEntity<Object> deleteTask (@PathVariable UUID id){
+        return ResponseEntity.status(HttpStatus.OK).body(taskService.delete(id));
+    }}
