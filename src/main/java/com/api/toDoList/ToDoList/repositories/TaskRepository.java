@@ -14,4 +14,6 @@ public interface TaskRepository extends JpaRepository<TaskModel, UUID>{
     public List<TaskModel> getByCompletedTrue();
 
     public List<TaskModel> getByCompletedFalse();
+
+    public List<TaskModel> getByUserId();
 }
